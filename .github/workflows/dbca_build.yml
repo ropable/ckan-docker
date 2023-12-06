@@ -1,0 +1,88 @@
+name: Create and publish a Docker image
+
+on:
+  # Trigger the workflow on push on master, develop and tags
+  push:
+    branches:
+      - master
+      - develop
+      - tags/*
+
+env:
+   REGISTRY: ghcr.io
+   IMAGE_NAME: ${{ github.repository }}
+
+jobs: 
+   build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    -  name: Checkout
+       uses: actions/checkout@v4
+       
+    - name: Log in to the Container registry
+      uses: docker/login-action@v3
+      with:
+         registry: ${{ env.REGISTRY }}
+         username: ${{ github.actor }}
+         password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata (tags, labels) for Docker nginx image
+      id: meta_nginx
+      uses: docker/metadata-action@v5
+      with:
+         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-nginx
+
+    - name: Extract metadata (tags, labels) for Docker postgres image
+      id: meta_postgres
+      uses: docker/metadata-action@v5
+      with:
+         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-postgres
+
+    - name: Extract metadata (tags, labels) for Docker ckan image
+      id: meta_ckan
+      uses: docker/metadata-action@v5
+      with:
+         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-ckan
+
+    - name: Extract metadata (tags, labels) for Docker ckan worker image
+      id: meta_ckan_worker
+      uses: docker/metadata-action@v5
+      with:
+         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-ckan-worker
+
+    - name: NGINX Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+         context: ./nginx
+         file: ./nginx/Dockerfile
+         push: true
+         tags: ${{ steps.meta_nginx.outputs.tags }}
+
+    - name: PostgreSQL Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+         context: ./postgresql
+         file: ./postgresql/Dockerfile
+         push: true
+         tags: ${{ steps.meta_postgres.outputs.tags }}
+
+    - name: CKAN Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+         context: ./ckan
+         file: ./ckan/Dockerfile
+         push: true
+         tags: ${{ steps.meta_ckan.outputs.tags }}
+
+    - name: CKAN Worker Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+         context: ./ckan
+         file: ./ckan/Dockerfile.worker
+         push: true
+         tags: ${{ steps.meta_ckan_worker.outputs.tags }}
+         build-args: CKAN_IMAGE=${{ steps.meta_ckan.outputs.tags }}
+      
