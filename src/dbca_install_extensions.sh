@@ -7,7 +7,7 @@
 cd src/
 
 ## Must Have ##
-git clone https://github.com/salsadigitalauorg/ckanext-dbca.git
+git clone https://github.com/dbca-wa/ckanext-dbca.git
 
 # QA
 # git clone https://github.com/dbca-wa/ckanext-qa.git
