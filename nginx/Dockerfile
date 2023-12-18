@@ -9,6 +9,7 @@ RUN apk update --no-cache && \
 COPY setup/nginx.conf ${NGINX_DIR}/nginx.conf
 COPY setup/index.html /usr/share/nginx/html/index.html
 COPY setup/default.conf ${NGINX_DIR}/conf.d/
+COPY setup/default.conf.template ${NGINX_DIR}/templates/
 
 RUN mkdir -p ${NGINX_DIR}/certs
 
