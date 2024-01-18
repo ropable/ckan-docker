@@ -55,3 +55,6 @@ pip3 install -e 'git+https://github.com/ckan/ckanext-geoview.git@v0.1.0#egg=ckan
 # 3rd Party #
 # DOI
 pip3 install -e git+https://github.com/NaturalHistoryMuseum/ckanext-doi@v3.1.10#egg=ckanext-doi
+
+# DBCA Project
+pip3 install -e git+https://github.com/dbca-wa/ckanext-dbca.git@develop#egg=ckanext-dbca
