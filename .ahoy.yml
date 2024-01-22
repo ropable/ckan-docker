@@ -146,7 +146,7 @@ commands:
       if [ "$DOCKER_COMPOSE" = "docker-compose.dev.yml" ]; then
         SITE_URL="http://localhost:${CKAN_PORT_HOST}"
       else
-        SITE_URL="http://localhost:${NGINX_PORT_HOST}"
+        SITE_URL="http://localhost:${NGINX_SSLPORT_HOST}"
       fi
       open $SITE_URL
 
