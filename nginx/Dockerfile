@@ -21,4 +21,4 @@ ENTRYPOINT \
     -keyout ${NGINX_DIR}/certs/ckan-local.key \
     -out ${NGINX_DIR}/certs/ckan-local.crt \
     -days 365 && \
-  nginx -g 'daemon off;'
+  /docker-entrypoint.sh nginx -g 'daemon off;'
