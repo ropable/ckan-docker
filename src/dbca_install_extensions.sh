@@ -16,14 +16,5 @@ git clone https://github.com/dbca-wa/ckanext-dbca.git
 # Office Docs
 # git clone https://github.com/dbca-wa/ckanext-officedocs
 
-## Should have ##
-# Geopusher
-# git clone https://github.com/dbca-wa/ckanext-geopusher.git
-
-## Could have ##
-# Cesium Preview
-# git clone https://github.com/dbca-wa/ckanext-cesiumpreview.git
-# Featured Views
-# git clone https://github.com/dbca-wa/ckanext-featuredviews
 
 echo "Ready to build project: ahoy build"
