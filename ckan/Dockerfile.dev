@@ -31,7 +31,6 @@ FROM ckan/ckan-dev:2.10.3
 #RUN  pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@v0.0.6#egg=ckanext-dcat && \
 #     pip3 install -r https://raw.githubusercontent.com/ckan/ckanext-dcat/v0.0.6/requirements.txt
 
-
 # Install any extensions needed by your CKAN instance
 COPY setup/dbca_requirements.sh ${APP_DIR}
 RUN pip3 install pip --upgrade && \

@@ -1,8 +1,9 @@
 #!/bin/sh
 
-## Must Have ##
+## CKAN Core extensions ##
+
 # Archiver
-pip3 install -e 'git+https://github.com/ckan/ckanext-archiver.git@master#egg=ckanext-archiver'
+pip3 install -e git+https://github.com/ckan/ckanext-archiver.git@master#egg=ckanext-archiver
 pip3 install -r ${SRC_DIR}/ckanext-archiver/requirements.txt
 
 # DCAT
@@ -10,7 +11,7 @@ pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@v1.5.1#egg=ckanext-
 pip3 install -r ${SRC_DIR}/ckanext-dcat/requirements.txt
 
 # Harvester
-pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@v1.5.6#egg=ckanext-harvest'
+pip3 install -e git+https://github.com/ckan/ckanext-harvest.git@v1.5.6#egg=ckanext-harvest
 pip3 install -r ${SRC_DIR}/ckanext-harvest/requirements.txt
 
 # Hierarchy
@@ -32,7 +33,7 @@ pip3 install -e git+https://github.com/ckan/ckanext-showcase.git@v1.6.1#egg=ckan
 pip3 install -r ${SRC_DIR}/ckanext-showcase/requirements.txt
 
 # Scheming
-pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git@release-3.0.0#egg=ckanext-scheming'
+pip3 install -e git+https://github.com/ckan/ckanext-scheming.git@release-3.0.0#egg=ckanext-scheming
 
 # Spatial
 # dependencies
@@ -46,15 +47,28 @@ pip3 install -e git+https://github.com/ckan/ckanext-spatial.git@v2.1.1#egg=ckane
 pip3 install -r ${SRC_DIR}/ckanext-spatial/requirements.txt
 
 # XLoader
-pip3 install -e 'git+https://github.com/ckan/ckanext-xloader.git@1.0.1#egg=ckanext-xloader'
+pip3 install -e git+https://github.com/ckan/ckanext-xloader.git@1.0.1#egg=ckanext-xloader
 pip3 install -r ${SRC_DIR}/ckanext-xloader/requirements.txt
 
 # Geoview
-pip3 install -e 'git+https://github.com/ckan/ckanext-geoview.git@v0.1.0#egg=ckanext-geoview'
+pip3 install -e git+https://github.com/ckan/ckanext-geoview.git@v0.1.0#egg=ckanext-geoview
 
-# 3rd Party #
+
+## 3rd Party ##
 # DOI
 pip3 install -e git+https://github.com/NaturalHistoryMuseum/ckanext-doi@v3.1.10#egg=ckanext-doi
 
-# DBCA Project
+
+## DBCA Project ##
+
+# DBCA
 pip3 install -e git+https://github.com/dbca-wa/ckanext-dbca.git@develop#egg=ckanext-dbca
+
+# QA
+# Install qsv dependency for extension ckanext-qa
+wget -O /tmp/qsv.zip https://github.com/jqnatividad/qsv/releases/download/0.110.0/qsv-0.110.0-x86_64-unknown-linux-musl.zip
+unzip /tmp/qsv.zip -d /usr/local/bin
+rm /tmp/qsv.zip
+apk add file
+pip3 install -e git+https://github.com/dbca-wa/ckanext-qa.git@develop#egg=ckanext-qa
+pip3 install -r ${SRC_DIR}/ckanext-qa/requirements.txt
