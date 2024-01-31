@@ -57,6 +57,12 @@ RUN for d in $APP_DIR/patches/*; do \
 
 ## DBCA specific configuration ##
 
+## Create logs folder
+RUN mkdir -p $APP_DIR/logs && \
+    touch $APP_DIR/logs/ckan.log && \
+    chown -R ckan:ckan $APP_DIR/logs && \
+    chmod -R 755 $APP_DIR/logs
+
 # Override the default dbca_start_ckan_development.sh script
 COPY setup/dbca_start_ckan_development.sh.override ${APP_DIR}/start_ckan_development.sh
 RUN chmod +x ${APP_DIR}/start_ckan_development.sh

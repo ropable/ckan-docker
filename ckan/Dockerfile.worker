@@ -1,12 +1,6 @@
 ARG CKAN_IMAGE
 FROM ${CKAN_IMAGE}
 
-## Create logs folder
-RUN mkdir -p $APP_DIR/logs && \
-    touch $APP_DIR/logs/ckan-cron-jobs.log && \
-    chown -R ckan:ckan $APP_DIR/logs && \
-    chmod -R 755 $APP_DIR/logs
-
 ## Supervisor config
 COPY supervisor/*.conf /etc/supervisord.d
 
