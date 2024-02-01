@@ -72,3 +72,6 @@ rm /tmp/qsv.zip
 apk add file
 pip3 install -e git+https://github.com/dbca-wa/ckanext-qa.git@develop#egg=ckanext-qa
 pip3 install -r ${SRC_DIR}/ckanext-qa/requirements.txt
+
+# Office Docs
+pip3 install -e git+https://github.com/dbca-wa/ckanext-officedocs.git@develop#egg=ckanext-officedocs
