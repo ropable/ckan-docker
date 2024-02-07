@@ -24,14 +24,6 @@ RUN for d in $APP_DIR/patches/*; do \
 
 ## DBCA specific configuration ##
 
-## Create logs folder and files
-RUN mkdir -p $APP_DIR/logs && \
-    touch $APP_DIR/logs/ckan.log && \
-    touch $APP_DIR/logs/ckan-worker.log && \
-    touch $APP_DIR/logs/ckan-crons-jobs.log && \
-    chown -R ckan:ckan $APP_DIR/logs && \
-    chmod -R 755 $APP_DIR/logs
-
 # Override the default start_ckan.sh script
 COPY setup/dbca_start_ckan.sh.override ${APP_DIR}/start_ckan.sh
 RUN chmod +x ${APP_DIR}/start_ckan.sh
