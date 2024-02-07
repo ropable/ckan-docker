@@ -157,25 +157,32 @@ commands:
         echo "AZURE_FILE_SHARE_URL or AZURE_FILE_SHARE_SAS_TOKEN is not set"
         exit 1
       fi
+      
       echo "Downloading ckan_logs from:$AZURE_FILE_SHARE_URL"
+      
       LOG_FILE="ckan.log"
+      echo "Downloading $LOG_FILE"
       FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
-      echo "Downloading ckan.log:$FULL_URL"
-      curl -L -o dbca/ckan_logs/ckan.log "$FULL_URL"
-      echo "Downloading ckan-crons-jobs.log"
+      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
+      
       LOG_FILE="ckan-crons-jobs.log"
+      echo "Downloading $LOG_FILE"
       FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
-      curl -L -o dbca/ckan_logs/ckan.log "$FULL_URL"
-      echo "Downloading ckan-worker.log"
+      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
+
       LOG_FILE="ckan-worker.log"
+      echo "Downloading $LOG_FILE"
       FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
-      curl -L -o dbca/ckan_logs/ckan.log "$FULL_URL"
-      echo "Downloading nginx access log"
+      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
+      
       LOG_FILE="nginx_access.log"
+      echo "Downloading $LOG_FILE"      
       FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
-      curl -L -o dbca/ckan_logs/ckan.log "$FULL_URL"
-      echo "Downloading nginx error log"
-      LOG_FILE="nginx_access.log"
+      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
+      
+      LOG_FILE="nginx_error.log"
+      echo "Downloading $LOG_FILE"
       FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
-      curl -L -o dbca/ckan_logs/ckan.log "$FULL_URL"
+      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
+      
       echo "CKAN logs downloaded to dbca/ckan_logs"
