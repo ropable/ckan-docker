@@ -1,0 +1,9 @@
+/srv/app/logs/nginx_access.log /srv/app/logs/nginx_error.log {
+    daily
+    rotate 7
+    missingok
+    notifempty
+    compress
+    delaycompress
+    copytruncate
+}

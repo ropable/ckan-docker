@@ -1,0 +1,9 @@
+/srv/app/logs/ckan-worker.log /srv/app/logs/ckan-crons-jobs.log {
+    daily
+    rotate 7
+    missingok
+    notifempty
+    compress
+    delaycompress
+    copytruncate
+}

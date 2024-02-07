@@ -1,0 +1,3 @@
+# Crontab for Nginx cron jobs
+# Midnight task to rotate CKAN app logs every day
+0 0 * * *  /usr/sbin/logrotate -s /srv/app/logs/logrotate.status /etc/logrotate.d/dbca_nginx_rotate_logs

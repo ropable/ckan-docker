@@ -1,6 +1,11 @@
 ARG CKAN_IMAGE
 FROM ${CKAN_IMAGE}
 
+# Install logrotate
+RUN apk add logrotate
+# Create logrotate config file for app logs
+COPY setup/dbca_ckan_rotate_logs /etc/logrotate.d/dbca_ckan_rotate_logs
+
 ## Supervisor config
 COPY supervisor/*.conf /etc/supervisord.d
 
