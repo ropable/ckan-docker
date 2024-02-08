@@ -1,4 +1,5 @@
 /srv/app/logs/ckan-worker.log /srv/app/logs/ckan-crons-jobs.log {
+    su ckan ckan
     daily
     rotate 7
     missingok

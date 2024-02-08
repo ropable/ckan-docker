@@ -1,11 +1,15 @@
 #!/bin/bash
 
-## Create logs folder and files
+## Create logs folder/files and set permissions
 mkdir -p $APP_DIR/logs
 touch $APP_DIR/logs/ckan.log
 touch $APP_DIR/logs/ckan-worker.log
 touch $APP_DIR/logs/ckan-crons-jobs.log
 chown -R ckan:ckan $APP_DIR/logs
+
+## Create archive folder and set permissions
+mkdir -p $CKAN_STORAGE_PATH/archiver
+chown -R ckan:ckan $CKAN_STORAGE_PATH/archiver
 
 echo "CKAN__PLUGINS: $CKAN__PLUGINS"
 
