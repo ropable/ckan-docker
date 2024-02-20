@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Python: CKAN Run & Debug",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "pdb",
             "args": [
@@ -23,7 +23,7 @@
         },
         {
             "name": "Python: CKAN Jobs Worker Run & Debug",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "pdb",
             "args": [
@@ -38,7 +38,7 @@
         },
         {
             "name": "Python: CKAN CLI Command Run & Debug",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "pdb",
             "args": [
