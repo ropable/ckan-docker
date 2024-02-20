@@ -3,7 +3,7 @@
 0 0 * * *  /usr/sbin/logrotate -s /srv/app/logs/logrotate.status /etc/logrotate.d/dbca_ckan_rotate_logs
 # Example cron job runs the harvester run command every 15 mins
 #*/15 * * * * /usr/bin/ckan -c /srv/app/config/dbca.ini harvester run
-# Midnight task to schedule embargo datasets to public visibility
-0 0 * * * /usr/bin/ckan -c /srv/app/config/dbca.ini dbca scheduled_datasets
+# 8am task to schedule embargo datasets to public visibility
+0 8 * * * /usr/bin/ckan -c /srv/app/config/dbca.ini dbca scheduled_datasets
 # Midnight report generation for archiver broken links
 0 0 * * * /usr/bin/ckan -c /srv/app/config/dbca.ini report generate
