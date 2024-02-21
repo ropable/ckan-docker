@@ -32,7 +32,7 @@ then
     done
 fi
 
-# Revert back touse DBCA config file
+# Revert back to use DBCA config file
 export CKAN_INI=$APP_DIR/config/dbca.ini
 
 if [ $? -eq 0 ]

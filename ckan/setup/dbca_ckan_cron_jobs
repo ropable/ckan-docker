@@ -7,3 +7,5 @@
 0 8 * * * /usr/bin/ckan -c /srv/app/config/dbca.ini dbca scheduled_datasets
 # Midnight report generation for archiver broken links
 0 0 * * * /usr/bin/ckan -c /srv/app/config/dbca.ini report generate
+# 8am task to send CKAN email notifications
+0 8 * * * /usr/bin/ckan -c /srv/app/config/dbca.ini notify send_emails
