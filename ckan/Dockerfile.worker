@@ -5,11 +5,6 @@ FROM ${CKAN_IMAGE}
 ENV CKAN__PLUGINS="dbca activity datastore xloader scheming_datasets qa archiver report envvars"
 RUN ckan config-tool $CKAN_INI "ckan.plugins = ${CKAN__PLUGINS}"
 
-# Install logrotate
-RUN apk add logrotate
-# Create logrotate config file for app logs
-COPY setup/dbca_ckan_rotate_logs /etc/logrotate.d/dbca_ckan_rotate_logs
-
 ## Supervisor config
 COPY supervisor/*.conf /etc/supervisord.d
 

@@ -1,6 +1,4 @@
 # Crontab for CKAN cron jobs
-# Midnight task to rotate CKAN app logs every day
-0 0 * * *  /usr/sbin/logrotate -s /srv/app/logs/logrotate.status /etc/logrotate.d/dbca_ckan_rotate_logs
 # Example cron job runs the harvester run command every 15 mins
 #*/15 * * * * /usr/bin/ckan -c /srv/app/config/dbca.ini harvester run
 # 8am task to schedule embargo datasets to public visibility
