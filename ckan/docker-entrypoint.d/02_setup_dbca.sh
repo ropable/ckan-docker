@@ -3,6 +3,7 @@
 ## Create logs folder/files and set permissions
 mkdir -p $APP_DIR/logs
 touch $APP_DIR/logs/ckan.log
+touch $APP_DIR/logs/ckan-worker.log
 chown -R ckan:ckan $APP_DIR/logs
 
 ## Create archive folder and set permissions
