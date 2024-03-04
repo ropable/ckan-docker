@@ -13,5 +13,7 @@ git clone https://github.com/dbca-wa/ckanext-qa.git
 sed -i".$(date +%Y%m%d_%H%M%S).bak" -e '/ckanext-report/d' -e '/ckanext-archiver/d' ckanext-qa/dev-requirements.txt
 # Office Docs
 git clone https://github.com/dbca-wa/ckanext-officedocs.git
+# Showcase
+git clone https://github.com/dbca-wa/ckanext-showcase.git
 
 echo "Ready to build project: ahoy build"

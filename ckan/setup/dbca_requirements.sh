@@ -28,9 +28,9 @@ pip3 install -e git+https://github.com/ckan/ckanext-pdfview.git@0.0.8#egg=ckanex
 pip3 install -e git+http://github.com/ckan/ckanext-report.git@master#egg=ckanext-report
 pip3 install -r ${SRC_DIR}/ckanext-report/requirements.txt
 
-# Showcase
-pip3 install -e git+https://github.com/ckan/ckanext-showcase.git@v1.6.1#egg=ckanext-showcase
-pip3 install -r ${SRC_DIR}/ckanext-showcase/requirements.txt
+# # Showcase
+# pip3 install -e git+https://github.com/ckan/ckanext-showcase.git@v1.6.1#egg=ckanext-showcase
+# pip3 install -r ${SRC_DIR}/ckanext-showcase/requirements.txt
 
 # Scheming
 pip3 install -e git+https://github.com/ckan/ckanext-scheming.git@release-3.0.0#egg=ckanext-scheming
@@ -75,3 +75,7 @@ pip3 install -r ${SRC_DIR}/ckanext-qa/requirements.txt
 
 # Office Docs
 pip3 install -e git+https://github.com/dbca-wa/ckanext-officedocs.git@develop#egg=ckanext-officedocs
+
+# Showcase
+pip3 install -e git+https://github.com/dbca-wa/ckanext-showcase.git@develop#egg=ckanext-showcase
+pip3 install -r ${SRC_DIR}/ckanext-showcase/requirements.txt
