@@ -164,11 +164,6 @@ commands:
       echo "Downloading $LOG_FILE"
       FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
       curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
-      
-      LOG_FILE="ckan-crons-jobs.log"
-      echo "Downloading $LOG_FILE"
-      FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
-      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
 
       LOG_FILE="ckan-worker.log"
       echo "Downloading $LOG_FILE"
