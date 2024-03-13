@@ -15,5 +15,7 @@ sed -i".$(date +%Y%m%d_%H%M%S).bak" -e '/ckanext-report/d' -e '/ckanext-archiver
 git clone https://github.com/dbca-wa/ckanext-officedocs.git
 # Showcase
 git clone https://github.com/dbca-wa/ckanext-showcase.git
+# DOI
+git clone https://github.com/dbca-wa/ckanext-doi
 
 echo "Ready to build project: ahoy build"
