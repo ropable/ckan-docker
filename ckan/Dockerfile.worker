@@ -2,7 +2,7 @@ ARG CKAN_IMAGE
 FROM ${CKAN_IMAGE}
 
 # Override the default CKAN config plugins to only use the ones we need for the worker
-ENV CKAN__PLUGINS="dbca activity datastore xloader scheming_datasets qa archiver report envvars"
+ENV CKAN__PLUGINS="dbca activity datastore xloader scheming_datasets qa archiver report doi envvars"
 RUN ckan config-tool $CKAN_INI "ckan.plugins = ${CKAN__PLUGINS}"
 # Update the CKAN config log file handler to use the worker log file
 RUN ckan config-tool $CKAN_INI -s handler_fileHandler "args = ('/srv/app/logs/ckan-worker.log', 'midnight', 1, 7)"
