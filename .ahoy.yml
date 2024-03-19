@@ -125,8 +125,13 @@ commands:
     cmd: |
       if [ -e "$@" ] ; then
         docker compose -f $DOCKER_COMPOSE exec -T $POSTGRESQL_CONTAINER_NAME sh -c 'pg_restore -U $CKAN_DB_USER -d $CKAN_DB --clean --if-exists -v --no-owner --no-privileges' < "$@"
+        ahoy reindex-solr
       else echo "Provided sql file" "$@" "does not exist"
       fi
+
+  reindex-solr:
+    usage: Re-runs the Solr index, e.g. after running `db-import` command
+    cmd: ahoy run "ckan search-index rebuild"
 
   db-dump:
     usage: Dump data out into a file. `ahoy db-dump local.dump`
