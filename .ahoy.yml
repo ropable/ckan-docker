@@ -129,6 +129,34 @@ commands:
       else echo "Provided sql file" "$@" "does not exist"
       fi
 
+  import-db:
+    usage: Import the DB from an environment into your local dev environment | ahoy import-db ENVIRONMENT
+    cmd: |    
+      source ./scripts/messages.sh
+      #
+      # Check the correct arguments are supplied
+      #
+      if [[ "$1" != "staging" ]] && [[ "$1" != "production" ]]; then
+        error "Invalid environment. Please use 'staging' or 'production'. eg ahoy import-db ENVIRONMENT"
+        exit 1
+      fi
+
+      ENVIRONMENT=$1  
+      info "Dumping DB from $ENVIRONMENT"
+      if [[ "$1" == "staging" ]]; then
+        docker compose -f $DOCKER_COMPOSE exec -T $POSTGRESQL_CONTAINER_NAME sh -c 'cd /tmp && pg_dump "postgresql://'"$AZURE_POSTGRES_STAGING_USER"':'"$AZURE_POSTGRES_STAGING_PASSWORD"'@'"$AZURE_POSTGRES_STAGING_HOST"'/'"$AZURE_POSTGRES_STAGING_DB"'" --format=custom -v > latest.dump'
+      else
+        docker compose -f $DOCKER_COMPOSE exec -T $POSTGRESQL_CONTAINER_NAME sh -c 'cd /tmp && pg_dump "postgresql://'"$AZURE_POSTGRES_PROD_USER"':'"$AZURE_POSTGRES_PROD_PASSWORD"'@'"$AZURE_POSTGRES_PROD_HOST"'/'"$AZURE_POSTGRES_PROD_DB"'" --exclude-table=dbca_spatial --format=custom -v > latest.dump'
+      fi
+        
+      info "Importing DB from $ENVIRONMENT"
+      docker compose -f $DOCKER_COMPOSE exec -T $POSTGRESQL_CONTAINER_NAME sh -c 'pg_restore -U $CKAN_DB_USER -d $CKAN_DB --clean --if-exists --no-owner --no-privileges -v < /tmp/latest.dump'
+      info "Rebuilding Solr Index"
+      ahoy reindex-solr
+
+      success "Database import successful"
+
+
   reindex-solr:
     usage: Re-runs the Solr index, e.g. after running `db-import` command
     cmd: ahoy run "ckan search-index rebuild"
