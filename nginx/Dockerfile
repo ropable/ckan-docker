@@ -9,7 +9,7 @@ RUN apk update --no-cache && \
 COPY setup/nginx.conf ${NGINX_DIR}/nginx.conf
 COPY setup/index.html /usr/share/nginx/html/index.html
 COPY setup/default.conf ${NGINX_DIR}/conf.d/
-COPY setup/default.conf.template ${NGINX_DIR}/templates/
+COPY setup/default.conf.template ${NGINX_DIR}/
 
 RUN mkdir -p ${NGINX_DIR}/certs
 
@@ -29,4 +29,5 @@ ENTRYPOINT \
     -out ${NGINX_DIR}/certs/ckan-local.crt \
     -days 365 && \
   /usr/sbin/crond && \
+  mkdir -p ${NGINX_DIR}/templates && mv ${NGINX_DIR}/default.conf.template ${NGINX_DIR}/templates/default.conf.template && \
   /docker-entrypoint.sh nginx -g 'daemon off;'
