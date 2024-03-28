@@ -29,5 +29,5 @@ ENTRYPOINT \
     -out ${NGINX_DIR}/certs/ckan-local.crt \
     -days 365 && \
   /usr/sbin/crond && \
-  mkdir -p ${NGINX_DIR}/templates && mv ${NGINX_DIR}/default.conf.template ${NGINX_DIR}/templates/default.conf.template && \
+  mkdir -p ${NGINX_DIR}/templates && cp ${NGINX_DIR}/default.conf.template ${NGINX_DIR}/templates/default.conf.template && \
   /docker-entrypoint.sh nginx -g 'daemon off;'
