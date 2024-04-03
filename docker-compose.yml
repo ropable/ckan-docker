@@ -91,6 +91,7 @@ services:
     volumes:
       - ckan_storage:/var/lib/ckan
       - ckan_logs:/srv/app/logs
+      - ./spatial_data:/srv/app/spatial_data
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000"]

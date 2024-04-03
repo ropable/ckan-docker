@@ -34,7 +34,6 @@ services:
       - ./src:/srv/app/src_extensions
       - ./ckan/config:/srv/app/config
       - ckan_logs:/srv/app/logs
-      - ./spatial_data:/srv/app/spatial_data
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000"]
@@ -66,6 +65,7 @@ services:
       - ckan_storage:/var/lib/ckan
       - ./src:/srv/app/src_extensions
       - ckan_logs:/srv/app/logs
+      - ./spatial_data:/srv/app/spatial_data
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000"]

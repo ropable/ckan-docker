@@ -58,6 +58,8 @@ pip3 install -e git+https://github.com/ckan/ckanext-geoview.git@v0.1.0#egg=ckane
 # DOI
 # pip3 install -e git+https://github.com/NaturalHistoryMuseum/ckanext-doi@v3.1.10#egg=ckanext-doi
 
+# SAML2
+pip3 install -e git+https://github.com/keitaroinc/ckanext-saml2auth.git@v1.3.0#egg=ckanext-saml2auth
 
 ## DBCA Project ##
 

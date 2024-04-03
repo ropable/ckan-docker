@@ -24,6 +24,10 @@ RUN for d in $APP_DIR/patches/*; do \
 
 ## DBCA specific configuration ##
 
+# ckanext-saml2auth dependencies
+RUN apk add xmlsec
+COPY saml ${APP_DIR}/saml
+
 # Override the default start_ckan.sh script
 COPY setup/dbca_start_ckan.sh.override ${APP_DIR}/start_ckan.sh
 RUN chmod +x ${APP_DIR}/start_ckan.sh
