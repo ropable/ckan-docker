@@ -124,9 +124,20 @@ commands:
     usage: Pipe in a postgres dump file.  `ahoy db-import local.dump`
     cmd: |
       if [ -e "$@" ] ; then
+        if [ "$DOCKER_COMPOSE" = "docker-compose.dev.yml" ]; then
+          CKAN_CONTAINER_NAME=ckan-dev
+        fi
+        SERVICE=$CKAN_CONTAINER_NAME
+        # Clean the database
+        ahoy run "ckan db clean --yes"
+        # Import the database
         docker compose -f $DOCKER_COMPOSE exec -T $POSTGRESQL_CONTAINER_NAME sh -c 'pg_restore -U $CKAN_DB_USER -d $CKAN_DB --clean --if-exists -v --no-owner --no-privileges' < "$@"
+        # Initialise plugin tables
+        docker compose -f $DOCKER_COMPOSE exec -T $CKAN_CONTAINER_NAME sh -c 'export CKAN__PLUGINS=$(grep "^ckan\.plugins" $APP_DIR/config/dbca.ini | cut -d"=" -f2) && bash /docker-entrypoint.d/02_setup_dbca.sh'
+        # Rebuild the Solr index
         ahoy reindex-solr
-      else echo "Provided sql file" "$@" "does not exist"
+      else
+        echo "Provided sql file" "$@" "does not exist"
       fi
 
   import-db:
