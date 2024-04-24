@@ -1,4 +1,6 @@
 # Crontab for CKAN cron jobs
+# Hourly Rebuild Solr Index
+0 * * * * /usr/bin/ckan -c /srv/app/config/dbca.ini ckan search-index
 # Example cron job runs the harvester run command every 15 mins
 #*/15 * * * * /usr/bin/ckan -c /srv/app/config/dbca.ini harvester run
 # 8am task to schedule embargo datasets to public visibility
