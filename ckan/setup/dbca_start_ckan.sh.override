@@ -2,12 +2,13 @@
 
 # Set the CKAN plugins variable to the plugins value from the dbca.ini config file
 export CKAN__PLUGINS=$(grep '^ckan\.plugins' $APP_DIR/config/dbca.ini | cut -d'=' -f2)
+
 # Update the default ckan config file
 export CKAN_INI=$APP_DIR/ckan.ini
 
 # Set up the Secret key used by Beaker and Flask
 # This can be overriden using a CKAN___BEAKER__SESSION__SECRET env var
-if grep -qE "beaker.session.secret ?= ?$" ckan.ini
+if grep -qE "beaker.session.secret ?= ?$" $CKAN_INI
 then
     echo "Setting beaker.session.secret in ini file"
     ckan config-tool $CKAN_INI "beaker.session.secret=$(python3 -c 'import secrets; print(secrets.token_urlsafe())')"
@@ -29,6 +30,7 @@ then
             *.py)     echo "$0: Running init file $f"; python3 "$f"; echo ;;
             *)        echo "$0: Ignoring $f (not an sh or py file)" ;;
         esac
+        echo
     done
 fi
 
