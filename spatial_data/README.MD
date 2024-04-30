@@ -4,7 +4,7 @@ This directory is used to store GeoJSON files that will be loaded from docker en
 
 ## Usage
 
-To add a new GeoJSON file, simply place it in this directory. The container will automatically load the file if there is a corresponding mapping defined in `ckanext.dbca.spatial_data_mapping`.
+To add a new GeoJSON file, simply place it in this directory. The cakn-worker container will automatically load any files on deployment if there is a corresponding mapping defined in `ckanext.dbca.spatial_data_mapping`.
 
 Please ensure that the GeoJSON file follows the correct format and contains valid spatial data.
 
@@ -26,3 +26,16 @@ Example:
     "tenure.geojson": {"layer": "DBCA Managed Tenure", "code":"LEG_TENURE", "name":"LEG_NAME"}
 }
 ```
+
+## Delete all spatial data and reload geojson files
+ 
+ This is recommended any time there are updates to any of the geojson files
+ 
+ Truncate database table dbca_spatial
+ ```
+ TRUNCATE "public"."dbca_spatial";
+ ```
+ ReDeploy ckan-worker container or run CLI command in container ckan-worker to load spatial data
+ ```
+ ckan -c $CKAN_INI dbca load_spatial_data
+ ```
