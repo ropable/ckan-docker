@@ -8,7 +8,8 @@ RUN ckan config-tool $CKAN_INI "ckan.plugins = ${CKAN__PLUGINS}"
 RUN ckan config-tool $CKAN_INI -s handler_fileHandler "args = ('/srv/app/logs/ckan-worker.log', 'midnight', 1, 7)"
 
 ## Supervisor config
-COPY supervisor/*.conf /etc/supervisord.d
+COPY supervisor/ckan_*.conf /etc/supervisord.d
+COPY supervisor/supervisord.conf /etc/supervisord.conf
 
 ## Cron jobs config
 COPY setup/dbca_ckan_cron_jobs $APP_DIR

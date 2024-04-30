@@ -96,7 +96,7 @@ if [ ! -f /tmp/container_ready ]; then
 fi
 
 # Start supervisord
-supervisord --configuration /etc/supervisord.conf &
+su ckan -c "supervisord --configuration /etc/supervisord.conf &"
 
 # Start the development server as the ckan user with automatic reload
 if [ "$USE_HTTPS_FOR_DEV" = true ] ; then

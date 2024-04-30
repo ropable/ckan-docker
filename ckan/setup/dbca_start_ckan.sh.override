@@ -38,7 +38,7 @@ export CKAN_INI=$APP_DIR/config/dbca.ini
 if [ $? -eq 0 ]
 then
     # Start supervisord
-    supervisord --configuration /etc/supervisord.conf &
+    su ckan -c "supervisord --configuration /etc/supervisord.conf &"
     # Start uwsgi
     su ckan -c 'uwsgi -i $APP_DIR/config/uwsgi.ini'
 else
