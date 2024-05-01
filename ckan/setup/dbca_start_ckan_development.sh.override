@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Set the CKAN plugins variable to the plugins value from the dbca.ini config file
-export CKAN__PLUGINS=$(grep '^ckan\.plugins' $APP_DIR/config/dbca.ini | cut -d'=' -f2)
-
 # Only run these start up scripts the first time the container is created
 if [ ! -f /tmp/container_ready ]; then
     # Install any local extensions in the src_extensions volume
@@ -95,8 +92,13 @@ if [ ! -f /tmp/container_ready ]; then
     touch /tmp/container_ready
 fi
 
+# Set the CKAN plugins variable to the plugins value from the dbca.ini config file
+export CKAN__PLUGINS=$(grep '^ckan\.plugins' $APP_DIR/config/dbca.ini | cut -d'=' -f2)
+
 # Start supervisord
 su ckan -c "supervisord --configuration /etc/supervisord.conf &"
+# Start crond
+/usr/sbin/crond
 
 # Start the development server as the ckan user with automatic reload
 if [ "$USE_HTTPS_FOR_DEV" = true ] ; then
