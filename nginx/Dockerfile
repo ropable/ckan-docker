@@ -13,13 +13,6 @@ COPY setup/default.conf.template ${NGINX_DIR}/templates/
 
 RUN mkdir -p ${NGINX_DIR}/certs
 
-# Install logrotate
-RUN apk add logrotate
-# Create logrotate config file for nginx logs
-COPY setup/dbca_nginx_rotate_logs /etc/logrotate.d/dbca_nginx_rotate_logs
-## Cron jobs config
-COPY setup/dbca_nginx_cron_jobs /etc/crontabs/root
-
 ENTRYPOINT \
   openssl req \
     -subj '/C=DE/ST=Berlin/L=Berlin/O=None/CN=localhost' \
@@ -28,5 +21,4 @@ ENTRYPOINT \
     -keyout ${NGINX_DIR}/certs/ckan-local.key \
     -out ${NGINX_DIR}/certs/ckan-local.crt \
     -days 365 && \
-  /usr/sbin/crond && \
   /docker-entrypoint.sh nginx -g 'daemon off;'
