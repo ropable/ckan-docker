@@ -70,3 +70,19 @@ Example:
  ```
  ckan -c $CKAN_INI dbca load_spatial_data
  ```
+
+ ## Delete dataset spatial metadata values
+
+ If there is a case where all or most current dataset spatial coordinates are incorrect and they need to be removed, run the below commands
+
+ Set dataset spatial values you to NULL in the database
+ ```
+ update "public"."package_extra"
+ set value = null
+ where key = 'spatial';
+ ```
+
+ Rebuild Solr index by running the CLI command in either the ckan or ckan-worker containers
+ ```
+ ckan -c $CKAN_INI search-index rebuild
+ ```
