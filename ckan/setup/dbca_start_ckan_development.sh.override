@@ -95,14 +95,18 @@ fi
 # Set the CKAN plugins variable to the plugins value from the dbca.ini config file
 export CKAN__PLUGINS=$(grep '^ckan\.plugins' $APP_DIR/config/dbca.ini | cut -d'=' -f2)
 
-# Start supervisord
-su ckan -c "supervisord --configuration /etc/supervisord.conf &"
-# Start crond
-/usr/sbin/crond
-
-# Start the development server as the ckan user with automatic reload
-if [ "$USE_HTTPS_FOR_DEV" = true ] ; then
-    su ckan -c "/usr/bin/ckan -c $CKAN_INI run -H 0.0.0.0 -C unsafe.cert -K unsafe.key"
+# if CKAN_WORKER is set to true, start the background services
+if [ "$CKAN_WORKER" = "true" ]
+then
+    # Start crond
+    /usr/sbin/crond
+    # Start supervisord
+    su ckan -c "supervisord --configuration /etc/supervisord.conf"
 else
-    su ckan -c "/usr/bin/ckan -c $CKAN_INI run -H 0.0.0.0"
+    # Start the development server as the ckan user with automatic reload
+    if [ "$USE_HTTPS_FOR_DEV" = true ] ; then
+        su ckan -c "/usr/bin/ckan -c $CKAN_INI run -H 0.0.0.0 -C unsafe.cert -K unsafe.key"
+    else
+        su ckan -c "/usr/bin/ckan -c $CKAN_INI run -H 0.0.0.0"
+    fi
 fi
