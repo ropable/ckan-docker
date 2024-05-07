@@ -36,7 +36,7 @@ services:
       - ckan_logs:/srv/app/logs
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000"]
+      test: ["CMD", "curl", "-I", "http://localhost:5000"]
     stdin_open: true
     tty: true
     
@@ -68,7 +68,7 @@ services:
       - ./spatial_data:/srv/app/spatial_data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000"]
+      test: ["CMD-SHELL", "supervisorctl", "status"]
     stdin_open: true
     tty: true
 
