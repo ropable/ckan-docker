@@ -59,7 +59,8 @@
 					"--max-line-length",
 					"160"
 				],
-				"cSpell.language": "en-AU"
+				"cSpell.language": "en-AU",
+				"extensions.verifySignature": false
 			}
 		}
 	},
