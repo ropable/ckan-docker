@@ -2,18 +2,22 @@
 
 # Only run these start up scripts the first time the container is created
 if [ ! -f /tmp/container_ready ]; then
+    export CKAN__PLUGINS=$(grep '^ckan\.plugins' $APP_DIR/config/dbca.ini | cut -d'=' -f2)
+    echo "CKAN__PLUGINS: $CKAN__PLUGINS"
+
     ## Create logs folder/files and set permissions
     mkdir -p $APP_DIR/logs
-    touch $APP_DIR/logs/ckan.log
     touch $APP_DIR/logs/ckan-worker.log
     chown -R ckan:ckan $APP_DIR/logs
+
+    ## Create webassets folder and set permissions
+    mkdir -p $APP_DIR/webassets
+    chown -R ckan:ckan $APP_DIR/webassets
+    ckan -c $CKAN_INI asset build
 
     ## Create archive folder and set permissions
     mkdir -p $CKAN_STORAGE_PATH/archiver
     chown -R ckan:ckan $CKAN_STORAGE_PATH/archiver
-
-    export CKAN__PLUGINS=$(grep '^ckan\.plugins' $APP_DIR/config/dbca.ini | cut -d'=' -f2)
-    echo "CKAN__PLUGINS: $CKAN__PLUGINS"
 
     if [[ $CKAN__PLUGINS == *"xloader"* ]]; then
         CKAN_INI=$APP_DIR/ckan.ini
