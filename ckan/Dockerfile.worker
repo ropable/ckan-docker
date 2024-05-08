@@ -3,7 +3,7 @@ FROM ${CKAN_IMAGE}
 
 ENV CKAN_WORKER=true
 # Override the default CKAN config plugins to only use the ones we need for the worker
-ENV CKAN__PLUGINS="dbca activity datastore xloader scheming_datasets qa archiver report doi datatables_view envvars"
+ENV CKAN__PLUGINS="dbca activity datastore xloader scheming_datasets qa archiver report doi image_view text_view datatables_view pdf_view geo_view shp_view officedocs_view webpage_view envvars"
 RUN ckan config-tool $CKAN_INI "ckan.plugins = ${CKAN__PLUGINS}"
 
 ## Supervisor config
