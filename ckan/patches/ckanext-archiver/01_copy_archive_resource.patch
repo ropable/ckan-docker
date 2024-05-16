@@ -1,6 +1,16 @@
-index 06a1758..eac41f3 100644
+diff --git a/ckanext/archiver/tasks.py b/ckanext/archiver/tasks.py
+index 06a1758..cbfbdaf 100644
 --- a/ckanext/archiver/tasks.py
 +++ b/ckanext/archiver/tasks.py
+@@ -275,7 +275,7 @@ def _update_resource(resource_id, queue, log):
+                 return
+ 
+             mimetype = None
+-            headers = None
++            headers = {}
+             content_type, content_encoding = mimetypes.guess_type(url)
+             if content_type:
+                 mimetype = _clean_content_type(content_type)
 @@ -568,14 +568,13 @@ def archive_resource(context, resource, log, result=None, url_timeout=30):
      except Exception:
          file_name = "resource"
@@ -21,7 +31,3 @@ index 06a1758..eac41f3 100644
          raise
      log.info('Archived resource as: %s', saved_file)
  
-
-~
-~
-~
