@@ -213,6 +213,11 @@ commands:
       echo "Downloading $LOG_FILE"
       FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
       curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
+
+      LOG_FILE="ckan-cron-jobs.log"
+      echo "Downloading $LOG_FILE"
+      FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
+      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
       
       LOG_FILE="nginx_access.log"
       echo "Downloading $LOG_FILE"      
@@ -220,6 +225,11 @@ commands:
       curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
       
       LOG_FILE="nginx_error.log"
+      echo "Downloading $LOG_FILE"
+      FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
+      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
+
+      LOG_FILE="supervisord.log"
       echo "Downloading $LOG_FILE"
       FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
       curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
