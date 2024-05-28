@@ -29,8 +29,8 @@ pip3 install -e git+http://github.com/ckan/ckanext-report.git@master#egg=ckanext
 pip3 install -r ${SRC_DIR}/ckanext-report/requirements.txt
 
 # # Showcase
-# pip3 install -e git+https://github.com/ckan/ckanext-showcase.git@v1.6.1#egg=ckanext-showcase
-# pip3 install -r ${SRC_DIR}/ckanext-showcase/requirements.txt
+pip3 install -e git+https://github.com/ckan/ckanext-showcase.git@v1.7.0egg=ckanext-showcase
+pip3 install -r ${SRC_DIR}/ckanext-showcase/requirements.txt
 
 # Scheming
 pip3 install -e git+https://github.com/ckan/ckanext-scheming.git@release-3.0.0#egg=ckanext-scheming
@@ -58,6 +58,9 @@ pip3 install -e git+https://github.com/ckan/ckanext-geoview.git@v0.1.0#egg=ckane
 # DOI
 # pip3 install -e git+https://github.com/NaturalHistoryMuseum/ckanext-doi@v3.1.10#egg=ckanext-doi
 
+# Office Docs
+pip3 install -e git+https://github.com/jqnatividad/ckanext-officedocs.git@master#egg=ckanext-officedocs
+
 # SAML2
 pip3 install -e git+https://github.com/keitaroinc/ckanext-saml2auth.git@v1.3.0#egg=ckanext-saml2auth
 
@@ -77,10 +80,3 @@ rm /tmp/qsv.zip
 apk add file
 pip3 install -e git+https://github.com/dbca-wa/ckanext-qa.git@develop#egg=ckanext-qa
 pip3 install -r ${SRC_DIR}/ckanext-qa/requirements.txt
-
-# Office Docs
-pip3 install -e git+https://github.com/dbca-wa/ckanext-officedocs.git@develop#egg=ckanext-officedocs
-
-# Showcase
-pip3 install -e git+https://github.com/dbca-wa/ckanext-showcase.git@develop#egg=ckanext-showcase
-pip3 install -r ${SRC_DIR}/ckanext-showcase/requirements.txt
