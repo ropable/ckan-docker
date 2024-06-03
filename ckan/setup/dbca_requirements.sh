@@ -25,11 +25,11 @@ pip3 install -e git+https://github.com/ckan/ckanext-pages.git@v0.5.2#egg=ckanext
 pip3 install -e git+https://github.com/ckan/ckanext-pdfview.git@0.0.8#egg=ckanext-pdfview
 
 # Report
-pip3 install -e git+http://github.com/ckan/ckanext-report.git@master#egg=ckanext-report
+pip3 install -e git+http://github.com/ckan/ckanext-report.git@master#egg=ckanext-report --exists-action i
 pip3 install -r ${SRC_DIR}/ckanext-report/requirements.txt
 
 # # Showcase
-pip3 install -e git+https://github.com/ckan/ckanext-showcase.git@v1.7.0egg=ckanext-showcase
+pip3 install -e git+https://github.com/ckan/ckanext-showcase.git@v1.7.0#egg=ckanext-showcase
 pip3 install -r ${SRC_DIR}/ckanext-showcase/requirements.txt
 
 # Scheming
