@@ -2,6 +2,7 @@
 
 # Only run these start up scripts the first time the container is created
 if [ ! -f /tmp/container_ready ]; then
+    CKAN_INI=$APP_DIR/config/dbca.ini 
     export CKAN__PLUGINS=$(grep '^ckan\.plugins' $APP_DIR/config/dbca.ini | cut -d'=' -f2)
     echo "CKAN__PLUGINS: $CKAN__PLUGINS"
 
