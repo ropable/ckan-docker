@@ -14,7 +14,7 @@ if [ ! -f /tmp/container_ready ]; then
     ## Create webassets folder and set permissions
     mkdir -p $APP_DIR/webassets
     chown -R ckan:ckan $APP_DIR/webassets
-    ckan -c $CKAN_INI asset build
+    su ckan -c "ckan -c $CKAN_INI asset build"
 
     ## Create archive folder and set permissions
     mkdir -p $CKAN_STORAGE_PATH/archiver
