@@ -1,0 +1,16 @@
+diff --git a/ckan/lib/uploader.py b/ckan/lib/uploader.py
+index 82e2dcbaf..56a9db59d 100644
+--- a/ckan/lib/uploader.py
++++ b/ckan/lib/uploader.py
+@@ -345,8 +345,9 @@ class ResourceUpload(object):
+                 except logic.ValidationError:
+                     os.remove(tmp_filepath)
+                     raise
+-                finally:
+-                    self.upload_file.close()
++                except OSError as e:
++                    # Handle I/O error when removing the temporary file
++                    log.warning(f"Failed to remove temporary file: {tmp_filepath}. Error: {e}")
+             os.rename(tmp_filepath, filepath)
+             return
+ 
