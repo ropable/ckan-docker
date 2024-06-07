@@ -1,28 +1,28 @@
 diff --git a/ckan/lib/uploader.py b/ckan/lib/uploader.py
-index 82e2dcbaf..e44fc5f65 100644
+index 82e2dcbaf..005645485 100644
 --- a/ckan/lib/uploader.py
 +++ b/ckan/lib/uploader.py
-@@ -343,7 +343,22 @@ class ResourceUpload(object):
-                 try:
-                     _copy_file(self.upload_file, output_file, max_size)
-                 except logic.ValidationError:
--                    os.remove(tmp_filepath)
-+                    try:
-+                        os.remove(tmp_filepath)
-+                    except OSError:
-+                        # Other process (blobfuse) might be still using file
-+                        # Sleep for a second and try again 5 times
-+                        import time
-+                        max_attempts = 5
-+                        delay = .5  # delay in seconds
-+                        for attempt in range(max_attempts):
-+                            time.sleep(delay)
-+                            try:
-+                                os.remove(tmp_filepath)
-+                            except OSError as e:
-+                                log.warning(f"Failed to remove temporary file attempt {attempt + 1}: {tmp_filepath}. Error: {e}")
-+                    except Exception as e:
-+                        log.error(f"Failed to remove temporary file: {tmp_filepath}. Error: {e}")
+@@ -338,15 +338,15 @@ class ResourceUpload(object):
+                 if e.errno != 17:
                      raise
-                 finally:
-                     self.upload_file.close()
+             tmp_filepath = filepath + '~'
+-            with open(tmp_filepath, 'wb+') as output_file:
+-                assert self.upload_file
+-                try:
++            try:
++                with open(tmp_filepath, 'wb+') as output_file:
++                    assert self.upload_file
+                     _copy_file(self.upload_file, output_file, max_size)
+-                except logic.ValidationError:
+-                    os.remove(tmp_filepath)
+-                    raise
+-                finally:
+-                    self.upload_file.close()
++            except logic.ValidationError:
++                os.remove(tmp_filepath)
++                raise
++            finally:
++                self.upload_file.close()
+             os.rename(tmp_filepath, filepath)
+             return
+ 
