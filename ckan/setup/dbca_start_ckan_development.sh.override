@@ -13,17 +13,17 @@ if [ ! -f /tmp/container_ready ]; then
 
             if [ -f $i/pip-requirements.txt ];
             then
-                pip install -r $i/pip-requirements.txt
+                pip install -r $i/pip-requirements.txt --exists-action i
                 echo "Found requirements file in $i"
             fi
             if [ -f $i/requirements.txt ];
             then
-                pip install -r $i/requirements.txt
+                pip install -r $i/requirements.txt --exists-action i
                 echo "Found requirements file in $i"
             fi
             if [ -f $i/dev-requirements.txt ];
             then
-                pip install -r $i/dev-requirements.txt
+                pip install -r $i/dev-requirements.txt --exists-action i
                 echo "Found dev-requirements file in $i"
             fi
             if [ -f $i/setup.py ];
