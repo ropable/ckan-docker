@@ -44,6 +44,8 @@ apk add --no-cache \
     proj-util \
     proj-dev 
 pip3 install -e git+https://github.com/ckan/ckanext-spatial.git@v2.1.1#egg=ckanext-spatial
+# Incompatibility with Shapely >2 Due to NumPy 2.0 Update https://github.com/ckan/ckanext-spatial/issues/330
+pip3 install "numpy>=1.26,<2"
 pip3 install -r ${SRC_DIR}/ckanext-spatial/requirements.txt
 
 # XLoader
