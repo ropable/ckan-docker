@@ -13,3 +13,4 @@ local/*
 src/
 dbca/
 spatial_data/*.geojson
+logs/
