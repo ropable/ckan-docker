@@ -1,15 +1,14 @@
-version: "3"
-
-
 volumes:
   ckan_storage:
   pg_data:
   solr_data:
+  pip_cache:
+  site_packages:
+  ckan_logs:
 
 services:
 
   nginx:
-    container_name: ${NGINX_CONTAINER_NAME}
     build:
       context: nginx/
       dockerfile: Dockerfile
@@ -23,10 +22,11 @@ services:
         condition: service_healthy
     ports:
       - "0.0.0.0:${NGINX_SSLPORT_HOST}:${NGINX_SSLPORT}"
+    volumes:
+      - ckan_storage:/var/lib/ckan
+      - ckan_logs:/srv/app/logs
     
   ckan:
-    container_name: ${CKAN_CONTAINER_NAME}
-    image: ${COMPOSE_PROJECT_NAME}-${CKAN_CONTAINER_NAME}
     platform: linux/amd64
     build:
       context: ckan/
@@ -51,13 +51,14 @@ services:
         condition: service_healthy
     volumes:
       - ckan_storage:/var/lib/ckan
+      - pip_cache:/root/.cache/pip
+      - site_packages:/usr/lib/python3.10/site-packages
+      - ckan_logs:/srv/app/logs
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000"]
+      test: ["CMD", "curl", "-I", "http://localhost:5000"]
     
   ckan-worker:
-    container_name: ${WORKER_CONTAINER_NAME}
-    image: ${COMPOSE_PROJECT_NAME}-${WORKER_CONTAINER_NAME}
     platform: linux/amd64
     build:
       context: ckan/
@@ -85,12 +86,14 @@ services:
         condition: service_started
     volumes:
       - ckan_storage:/var/lib/ckan
+      - ckan_logs:/srv/app/logs
+      - ./spatial_data:/srv/app/spatial_data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000"]
+      test: ["CMD-SHELL", "supervisorctl", "status"]
 
   db:
-    container_name: ${POSTGRESQL_CONTAINER_NAME}
+    platform: linux/amd64
     build:
       context: postgresql/
     networks:
@@ -112,11 +115,10 @@ services:
       test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
      
   solr:
-    container_name: ${SOLR_CONTAINER_NAME}
+    platform: linux/amd64
     networks:
       - solrnet
     image: ckan/ckan-solr:${SOLR_IMAGE_VERSION}
-    platform: linux/amd64
     volumes:
       - solr_data:/var/solr
     restart: unless-stopped
@@ -124,7 +126,6 @@ services:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8983/solr/"]
 
   redis:
-    container_name: ${REDIS_CONTAINER_NAME}
     image: redis:${REDIS_VERSION}
     networks:
       - redisnet

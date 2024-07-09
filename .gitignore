@@ -8,3 +8,9 @@ _solr/schema.xml
 _src/*
 local/*
 .env
+
+# DBCA
+src/
+dbca/
+spatial_data/*.geojson
+logs/

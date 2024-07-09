@@ -124,9 +124,53 @@ commands:
     usage: Pipe in a postgres dump file.  `ahoy db-import local.dump`
     cmd: |
       if [ -e "$@" ] ; then
+        if [ "$DOCKER_COMPOSE" = "docker-compose.dev.yml" ]; then
+          CKAN_CONTAINER_NAME=ckan-dev
+        fi
+        SERVICE=$CKAN_CONTAINER_NAME
+        # Clean the database
+        ahoy run "ckan db clean --yes"
+        # Import the database
         docker compose -f $DOCKER_COMPOSE exec -T $POSTGRESQL_CONTAINER_NAME sh -c 'pg_restore -U $CKAN_DB_USER -d $CKAN_DB --clean --if-exists -v --no-owner --no-privileges' < "$@"
-      else echo "Provided sql file" "$@" "does not exist"
+        # Initialise plugin tables
+        docker compose -f $DOCKER_COMPOSE exec -T $CKAN_CONTAINER_NAME sh -c 'rm  /tmp/container_ready && export CKAN__PLUGINS=$(grep "^ckan\.plugins" $APP_DIR/config/dbca.ini | cut -d"=" -f2) && bash /docker-entrypoint.d/02_setup_dbca.sh'
+        # Rebuild the Solr index
+        ahoy reindex-solr
+      else
+        echo "Provided sql file" "$@" "does not exist"
       fi
+
+  import-db:
+    usage: Import the DB from an environment into your local dev environment | ahoy import-db ENVIRONMENT
+    cmd: |    
+      source ./scripts/messages.sh
+      #
+      # Check the correct arguments are supplied
+      #
+      if [[ "$1" != "staging" ]] && [[ "$1" != "production" ]]; then
+        error "Invalid environment. Please use 'staging' or 'production'. eg ahoy import-db ENVIRONMENT"
+        exit 1
+      fi
+
+      ENVIRONMENT=$1  
+      info "Dumping DB from $ENVIRONMENT"
+      if [[ "$1" == "staging" ]]; then
+        docker compose -f $DOCKER_COMPOSE exec -T $POSTGRESQL_CONTAINER_NAME sh -c 'cd /tmp && pg_dump "postgresql://'"$AZURE_POSTGRES_STAGING_USER"':'"$AZURE_POSTGRES_STAGING_PASSWORD"'@'"$AZURE_POSTGRES_STAGING_HOST"'/'"$AZURE_POSTGRES_STAGING_DB"'" --format=custom -v > latest.dump'
+      else
+        docker compose -f $DOCKER_COMPOSE exec -T $POSTGRESQL_CONTAINER_NAME sh -c 'cd /tmp && pg_dump "postgresql://'"$AZURE_POSTGRES_PROD_USER"':'"$AZURE_POSTGRES_PROD_PASSWORD"'@'"$AZURE_POSTGRES_PROD_HOST"'/'"$AZURE_POSTGRES_PROD_DB"'" --exclude-table=dbca_spatial --format=custom -v > latest.dump'
+      fi
+        
+      info "Importing DB from $ENVIRONMENT"
+      docker compose -f $DOCKER_COMPOSE exec -T $POSTGRESQL_CONTAINER_NAME sh -c 'pg_restore -U $CKAN_DB_USER -d $CKAN_DB --clean --if-exists --no-owner --no-privileges -v < /tmp/latest.dump'
+      info "Rebuilding Solr Index"
+      ahoy reindex-solr
+
+      success "Database import successful"
+
+
+  reindex-solr:
+    usage: Re-runs the Solr index, e.g. after running `db-import` command
+    cmd: ahoy run "ckan search-index rebuild"
 
   db-dump:
     usage: Dump data out into a file. `ahoy db-dump local.dump`
@@ -146,7 +190,48 @@ commands:
       if [ "$DOCKER_COMPOSE" = "docker-compose.dev.yml" ]; then
         SITE_URL="http://localhost:${CKAN_PORT_HOST}"
       else
-        SITE_URL="http://localhost:${NGINX_PORT_HOST}"
+        SITE_URL="http://localhost:${NGINX_SSLPORT_HOST}"
       fi
       open $SITE_URL
 
+  download-ckan-logs:
+    usage: Download CKAN logs
+    cmd: |
+      if [ -z "$AZURE_FILE_SHARE_URL" ] || [ -z "$AZURE_FILE_SHARE_SAS_TOKEN" ]; then
+        echo "AZURE_FILE_SHARE_URL or AZURE_FILE_SHARE_SAS_TOKEN is not set"
+        exit 1
+      fi
+      
+      echo "Downloading ckan_logs from:$AZURE_FILE_SHARE_URL"
+      
+      LOG_FILE="ckan.log"
+      echo "Downloading $LOG_FILE"
+      FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
+      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
+
+      LOG_FILE="ckan-worker.log"
+      echo "Downloading $LOG_FILE"
+      FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
+      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
+
+      LOG_FILE="ckan-cron-jobs.log"
+      echo "Downloading $LOG_FILE"
+      FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
+      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
+      
+      LOG_FILE="nginx_access.log"
+      echo "Downloading $LOG_FILE"      
+      FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
+      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
+      
+      LOG_FILE="nginx_error.log"
+      echo "Downloading $LOG_FILE"
+      FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
+      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
+
+      LOG_FILE="supervisord.log"
+      echo "Downloading $LOG_FILE"
+      FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
+      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
+      
+      echo "CKAN logs downloaded to dbca/ckan_logs"

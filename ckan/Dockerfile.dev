@@ -1,4 +1,4 @@
-FROM ckan/ckan-dev:2.10.3
+FROM ckan/ckan-dev:2.10.4
 
 # Install any extensions needed by your CKAN instance
 # - Make sure to add the plugins to CKAN__PLUGINS in the .env file
@@ -31,7 +31,6 @@ FROM ckan/ckan-dev:2.10.3
 #RUN  pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@v0.0.6#egg=ckanext-dcat && \
 #     pip3 install -r https://raw.githubusercontent.com/ckan/ckanext-dcat/v0.0.6/requirements.txt
 
-
 # Install any extensions needed by your CKAN instance
 COPY setup/dbca_requirements.sh ${APP_DIR}
 RUN pip3 install pip --upgrade && \
@@ -57,6 +56,10 @@ RUN for d in $APP_DIR/patches/*; do \
     done
 
 ## DBCA specific configuration ##
+
+# ckanext-saml2auth dependencies
+RUN apk add xmlsec
+COPY saml ${APP_DIR}/saml
 
 # Override the default dbca_start_ckan_development.sh script
 COPY setup/dbca_start_ckan_development.sh.override ${APP_DIR}/start_ckan_development.sh

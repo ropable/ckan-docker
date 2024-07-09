@@ -5,7 +5,7 @@ export CKAN_INI=$APP_DIR/ckan.ini
 
 # Set up the Secret key used by Beaker and Flask
 # This can be overriden using a CKAN___BEAKER__SESSION__SECRET env var
-if grep -qE "beaker.session.secret ?= ?$" ckan.ini
+if grep -qE "beaker.session.secret ?= ?$" $CKAN_INI
 then
     echo "Setting beaker.session.secret in ini file"
     ckan config-tool $CKAN_INI "beaker.session.secret=$(python3 -c 'import secrets; print(secrets.token_urlsafe())')"
@@ -27,20 +27,28 @@ then
             *.py)     echo "$0: Running init file $f"; python3 "$f"; echo ;;
             *)        echo "$0: Ignoring $f (not an sh or py file)" ;;
         esac
+        echo
     done
 fi
 
-# Revert back touse DBCA config file
+# Revert back to use DBCA config file
 export CKAN_INI=$APP_DIR/config/dbca.ini
-# Unset CKAN__PLUGINS to stop the extension envvars overriding the plugins value set in the dbca config file
-unset CKAN__PLUGINS
+# Set the CKAN plugins variable to the plugins value from the dbca.ini config file
+export CKAN__PLUGINS=$(grep '^ckan\.plugins' $APP_DIR/config/dbca.ini | cut -d'=' -f2)
 
 if [ $? -eq 0 ]
 then
-    # Start supervisord
-    supervisord --configuration /etc/supervisord.conf &
-    # Start uwsgi
-    uwsgi -i $APP_DIR/config/uwsgi.ini
+    # if CKAN_WORKER is set to true, start the background services
+    if [ "$CKAN_WORKER" = "true" ]
+    then
+        # Start crond
+        /usr/sbin/crond
+        # Start supervisord
+        su ckan -c "supervisord --configuration /etc/supervisord.conf"
+    else
+        # Start uwsgi
+        su ckan -c 'uwsgi -i $APP_DIR/config/uwsgi.ini'
+    fi
 else
   echo "[prerun] failed...not starting CKAN."
 fi

@@ -1,9 +1,11 @@
-version: "3"
-
 volumes:
   ckan_storage:
   pg_data:
   solr_data:
+  pip_cache:
+  site_packages:
+  vscode_server:
+  ckan_logs:
 
 services:
 
@@ -31,13 +33,15 @@ services:
     volumes:
       - ckan_storage:/var/lib/ckan
       - ./src:/srv/app/src_extensions
+      - pip_cache:/root/.cache/pip
+      - site_packages:/usr/lib/python3.10/site-packages
+      - vscode_server:/root/.vscode-server
       - ./ckan/config:/srv/app/config
+      - ckan_logs:/srv/app/logs
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000"]
-    stdin_open: true
-    tty: true
-    
+
   ckan-dev-worker:
     build:
       context: ckan/
@@ -62,11 +66,14 @@ services:
     volumes:
       - ckan_storage:/var/lib/ckan
       - ./src:/srv/app/src_extensions
+      - pip_cache:/root/.cache/pip
+      - site_packages:/usr/lib/python3.10/site-packages
+      - vscode_server:/root/.vscode-server
+      - ckan_logs:/srv/app/logs
+      - ./spatial_data:/srv/app/spatial_data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000"]
-    stdin_open: true
-    tty: true
+      test: ["CMD-SHELL", "supervisorctl", "status"]
 
   db:
     build:

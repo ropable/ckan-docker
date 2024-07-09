@@ -1,4 +1,4 @@
-FROM ckan/ckan-base:2.10.3
+FROM ckan/ckan-base:2.10.4
 
 # Install any extensions needed by your CKAN instance
 # See Dockerfile.dev for more details and examples
@@ -23,6 +23,10 @@ RUN for d in $APP_DIR/patches/*; do \
     done
 
 ## DBCA specific configuration ##
+
+# ckanext-saml2auth dependencies
+RUN apk add xmlsec
+COPY saml ${APP_DIR}/saml
 
 # Override the default start_ckan.sh script
 COPY setup/dbca_start_ckan.sh.override ${APP_DIR}/start_ckan.sh

@@ -1,0 +1,28 @@
+diff --git a/ckan/lib/uploader.py b/ckan/lib/uploader.py
+index 82e2dcbaf..005645485 100644
+--- a/ckan/lib/uploader.py
++++ b/ckan/lib/uploader.py
+@@ -338,15 +338,15 @@ class ResourceUpload(object):
+                 if e.errno != 17:
+                     raise
+             tmp_filepath = filepath + '~'
+-            with open(tmp_filepath, 'wb+') as output_file:
+-                assert self.upload_file
+-                try:
++            try:
++                with open(tmp_filepath, 'wb+') as output_file:
++                    assert self.upload_file
+                     _copy_file(self.upload_file, output_file, max_size)
+-                except logic.ValidationError:
+-                    os.remove(tmp_filepath)
+-                    raise
+-                finally:
+-                    self.upload_file.close()
++            except logic.ValidationError:
++                os.remove(tmp_filepath)
++                raise
++            finally:
++                self.upload_file.close()
+             os.rename(tmp_filepath, filepath)
+             return
+ 

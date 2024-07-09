@@ -1,0 +1,33 @@
+diff --git a/ckanext/archiver/tasks.py b/ckanext/archiver/tasks.py
+index 06a1758..cbfbdaf 100644
+--- a/ckanext/archiver/tasks.py
++++ b/ckanext/archiver/tasks.py
+@@ -275,7 +275,7 @@ def _update_resource(resource_id, queue, log):
+                 return
+ 
+             mimetype = None
+-            headers = None
++            headers = {}
+             content_type, content_encoding = mimetypes.guess_type(url)
+             if content_type:
+                 mimetype = _clean_content_type(content_type)
+@@ -568,14 +568,13 @@ def archive_resource(context, resource, log, result=None, url_timeout=30):
+     except Exception:
+         file_name = "resource"
+ 
+-    # move the temp file to the resource's archival directory
+-    saved_file = os.path.join(archive_dir, file_name)
+-    shutil.move(result['saved_file'], saved_file)
+-    log.info('Going to do chmod: %s', saved_file)
+     try:
+-        os.chmod(saved_file, 0o644)  # allow other users to read it
++        # move the temp file to the resource's archival directory
++        saved_file = os.path.join(archive_dir, file_name)
++        shutil.copyfile(result['saved_file'], saved_file)
++        os.remove(result['saved_file'])
+     except Exception as e:
+-        log.error('chmod failed %s: %s', saved_file, e)
++        log.error("moving the temp file to the resource's archival directory failed %s: %s", saved_file, e)
+         raise
+     log.info('Archived resource as: %s', saved_file)
+ 
