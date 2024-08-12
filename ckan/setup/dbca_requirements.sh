@@ -69,10 +69,10 @@ pip3 install -e git+https://github.com/keitaroinc/ckanext-saml2auth.git@v1.3.0#e
 ## DBCA Project ##
 
 # DBCA
-pip3 install -e git+https://github.com/dbca-wa/ckanext-dbca.git@develop#egg=ckanext-dbca
+pip3 install -e git+https://github.com/dbca-wa/ckanext-dbca.git@master#egg=ckanext-dbca
 
 # DOI
-pip3 install -e git+https://github.com/dbca-wa/ckanext-doi@develop#egg=ckanext-doi
+pip3 install -e git+https://github.com/dbca-wa/ckanext-doi@master#egg=ckanext-doi
 
 # QA
 # Install qsv dependency for extension ckanext-qa
@@ -80,5 +80,5 @@ wget -O /tmp/qsv.zip https://github.com/jqnatividad/qsv/releases/download/0.110.
 unzip /tmp/qsv.zip -d /usr/local/bin
 rm /tmp/qsv.zip
 apk add file
-pip3 install -e git+https://github.com/dbca-wa/ckanext-qa.git@develop#egg=ckanext-qa
+pip3 install -e git+https://github.com/dbca-wa/ckanext-qa.git@master#egg=ckanext-qa
 pip3 install -r ${SRC_DIR}/ckanext-qa/requirements.txt
