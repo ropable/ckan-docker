@@ -11,6 +11,8 @@ COPY supervisor/ckan_*.conf /etc/supervisord.d
 COPY supervisor/supervisord.conf /etc/supervisord.conf
 
 ## Cron jobs config
+COPY setup/dbca_logs_maintenance.sql $APP_DIR
+RUN chmod -x $APP_DIR/dbca_logs_maintenance.sql
 COPY setup/dbca_ckan_cron_jobs $APP_DIR
 RUN chmod -x $APP_DIR/dbca_ckan_cron_jobs
 RUN crontab -u ckan $APP_DIR/dbca_ckan_cron_jobs
