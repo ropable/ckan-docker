@@ -9,3 +9,5 @@
 30 0 * * * /usr/bin/ckan -c /srv/app/config/dbca.ini report generate >> /srv/app/logs/ckan-cron-jobs.log 2>&1
 # 8am task to send CKAN email notifications
 0 8 * * * /usr/bin/ckan -c /srv/app/config/dbca.ini notify send_emails >> /srv/app/logs/ckan-cron-jobs.log 2>&1
+# Midnight dbca logs maintenance
+0 0 * * * psql $CKAN_SQLALCHEMY_URL -f /srv/app/dbca_logs_maintenance.sql >> /srv/app/logs/ckan-cron-jobs.log 2>&1
