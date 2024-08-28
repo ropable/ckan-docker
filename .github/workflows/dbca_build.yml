@@ -15,11 +15,12 @@ env:
    IMAGE_NAME: ${{ github.repository }}
 
 jobs: 
-   build-and-push-image:
+  build-and-push-image:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+      security-events: write
     steps:
     -  name: Checkout
        uses: actions/checkout@v4
@@ -87,4 +88,16 @@ jobs:
          push: true
          tags: ${{ steps.meta_ckan_worker.outputs.tags }}
          build-args: CKAN_IMAGE=${{ steps.meta_ckan.outputs.tags }}
-      
+    - name: Run Trivy vuln scanner on CKAN image
+      uses: aquasecurity/trivy-action@0.24.0
+      with:
+        scan-type: 'image'
+        image-ref: ${{ steps.meta_ckan.outputs.tags }}
+        vuln-type: 'os,library'
+        severity: 'HIGH,CRITICAL'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: 'trivy-results.sarif'
