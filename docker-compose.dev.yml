@@ -5,11 +5,11 @@ volumes:
   pip_cache:
   site_packages:
   vscode_server:
-  ckan_logs:
 
 services:
 
   ckan-dev:
+    user: ckan:ckan
     build:
       context: ckan/
       dockerfile: Dockerfile.dev
@@ -37,12 +37,13 @@ services:
       - site_packages:/usr/lib/python3.10/site-packages
       - vscode_server:/root/.vscode-server
       - ./ckan/config:/srv/app/config
-      - ckan_logs:/srv/app/logs
+      - ./logs:/srv/app/logs
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000"]
 
   ckan-dev-worker:
+    user: ckan:ckan
     build:
       context: ckan/
       dockerfile: Dockerfile.worker
@@ -69,7 +70,7 @@ services:
       - pip_cache:/root/.cache/pip
       - site_packages:/usr/lib/python3.10/site-packages
       - vscode_server:/root/.vscode-server
-      - ckan_logs:/srv/app/logs
+      - ./logs:/srv/app/logs
       - ./spatial_data:/srv/app/spatial_data
     restart: unless-stopped
     healthcheck:

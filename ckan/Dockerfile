@@ -37,3 +37,8 @@ COPY config/*.ini ${APP_DIR}/config/
 
 # Override default CKAN config file to use dbca.ini
 ENV CKAN_INI=${APP_DIR}/config/dbca.ini
+
+# Set the permissions to the ckan user
+RUN chown -R ckan:ckan $APP_DIR && \
+    chown -R ckan:ckan /usr/lib/python3.10/site-packages/ && \
+    chown -R ckan:ckan /usr/bin/
