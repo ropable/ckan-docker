@@ -10,9 +10,17 @@ RUN ckan config-tool $CKAN_INI "ckan.plugins = ${CKAN__PLUGINS}"
 COPY supervisor/ckan_*.conf /etc/supervisord.d
 COPY supervisor/supervisord.conf /etc/supervisord.conf
 
+## Cron jobs scripts
+COPY setup/dbca_logs_maintenance.sql $APP_DIR
 
+# Set the default user to root temporarily to update file and folder permissions
+USER root
 # Set the permissions to the ckan user
 RUN chown -R ckan:ckan $APP_DIR && \
     chown -R ckan:ckan /usr/lib/python3.10/site-packages/ && \
     chown -R ckan:ckan /usr/bin/ && \
-    chown -R ckan:ckan /etc/supervisord.d
+    chown -R ckan:ckan /etc/supervisord.d && \
+    chmod -x $APP_DIR/dbca_logs_maintenance.sql
+
+# Set the default user to ckan
+USER ckan

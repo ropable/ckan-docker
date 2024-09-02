@@ -42,3 +42,6 @@ ENV CKAN_INI=${APP_DIR}/config/dbca.ini
 RUN chown -R ckan:ckan $APP_DIR && \
     chown -R ckan:ckan /usr/lib/python3.10/site-packages/ && \
     chown -R ckan:ckan /usr/bin/
+
+# Set the default user to ckan
+USER ckan
