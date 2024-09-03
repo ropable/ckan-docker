@@ -14,7 +14,7 @@ entrypoint:
 commands:
   init:
     usage: Initialise the codebase on first-time setup (ahoy init)
-    cmd : |
+    cmd: |
       echo "Creating project variables."
       cp .env.dbca .env
 
@@ -142,7 +142,7 @@ commands:
 
   import-db:
     usage: Import the DB from an environment into your local dev environment | ahoy import-db ENVIRONMENT
-    cmd: |    
+    cmd: |
       source ./scripts/messages.sh
       #
       # Check the correct arguments are supplied
@@ -166,7 +166,6 @@ commands:
       ahoy reindex-solr
 
       success "Database import successful"
-
 
   reindex-solr:
     usage: Re-runs the Solr index, e.g. after running `db-import` command
@@ -201,29 +200,19 @@ commands:
         echo "AZURE_FILE_SHARE_URL or AZURE_FILE_SHARE_SAS_TOKEN is not set"
         exit 1
       fi
-      
+
       echo "Downloading ckan_logs from:$AZURE_FILE_SHARE_URL"
-      
-      LOG_FILE="ckan.log"
-      echo "Downloading $LOG_FILE"
-      FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
-      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
 
       LOG_FILE="ckan-worker.log"
       echo "Downloading $LOG_FILE"
       FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
       curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
 
-      LOG_FILE="ckan-cron-jobs.log"
-      echo "Downloading $LOG_FILE"
-      FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
-      curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
-      
       LOG_FILE="nginx_access.log"
       echo "Downloading $LOG_FILE"      
       FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
       curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
-      
+
       LOG_FILE="nginx_error.log"
       echo "Downloading $LOG_FILE"
       FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
@@ -233,5 +222,5 @@ commands:
       echo "Downloading $LOG_FILE"
       FULL_URL="$AZURE_FILE_SHARE_URL/ckan_logs/$LOG_FILE?$AZURE_FILE_SHARE_SAS_TOKEN"
       curl -L -o dbca/ckan_logs/$LOG_FILE "$FULL_URL"
-      
+
       echo "CKAN logs downloaded to dbca/ckan_logs"
