@@ -10,10 +10,6 @@ pip3 install -r ${SRC_DIR}/ckanext-archiver/requirements.txt
 pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@v1.5.1#egg=ckanext-dcat
 pip3 install -r ${SRC_DIR}/ckanext-dcat/requirements.txt
 
-# Harvester
-pip3 install -e git+https://github.com/ckan/ckanext-harvest.git@v1.5.6#egg=ckanext-harvest
-pip3 install -r ${SRC_DIR}/ckanext-harvest/requirements.txt
-
 # Hierarchy
 pip3 install -e git+https://github.com/ckan/ckanext-hierarchy.git@v1.2.1#egg=ckanext-hierarchy
 pip3 install -r ${SRC_DIR}/ckanext-hierarchy/requirements.txt

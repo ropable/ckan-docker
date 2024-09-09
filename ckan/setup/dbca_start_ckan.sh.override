@@ -41,13 +41,11 @@ then
     # if CKAN_WORKER is set to true, start the background services
     if [ "$CKAN_WORKER" = "true" ]
     then
-        # Start crond
-        /usr/sbin/crond
         # Start supervisord
-        su ckan -c "supervisord --configuration /etc/supervisord.conf"
+        supervisord --configuration /etc/supervisord.conf
     else
         # Start uwsgi
-        su ckan -c 'uwsgi -i $APP_DIR/config/uwsgi.ini'
+        uwsgi -i $APP_DIR/config/uwsgi.ini
     fi
 else
   echo "[prerun] failed...not starting CKAN."

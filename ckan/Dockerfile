@@ -25,7 +25,7 @@ RUN for d in $APP_DIR/patches/*; do \
 ## DBCA specific configuration ##
 
 # ckanext-saml2auth dependencies
-RUN apk add xmlsec
+RUN apk add xmlsec-dev
 COPY saml ${APP_DIR}/saml
 
 # Override the default start_ckan.sh script
@@ -37,3 +37,11 @@ COPY config/*.ini ${APP_DIR}/config/
 
 # Override default CKAN config file to use dbca.ini
 ENV CKAN_INI=${APP_DIR}/config/dbca.ini
+
+# Set the permissions to the ckan user
+RUN chown -R ckan:ckan $APP_DIR && \
+    chown -R ckan:ckan /usr/lib/python3.10/site-packages/ && \
+    chown -R ckan:ckan /usr/bin/
+
+# Set the default user to ckan
+USER ckan
