@@ -6,19 +6,20 @@ if [ ! -f /tmp/container_ready ]; then
     export CKAN__PLUGINS=$(grep '^ckan\.plugins' $APP_DIR/config/dbca.ini | cut -d'=' -f2)
     echo "CKAN__PLUGINS: $CKAN__PLUGINS"
 
-    ## Create logs folder/files and set permissions
+    ## Create logs folder/file
     mkdir -p $APP_DIR/logs
     touch $APP_DIR/logs/ckan-worker.log
-    chown -R ckan:ckan $APP_DIR/logs
+    touch $APP_DIR/logs/supervisord.log
 
-    ## Create webassets folder and set permissions
+    ## Create webassets folder
     mkdir -p $APP_DIR/webassets
-    chown -R ckan:ckan $APP_DIR/webassets
-    su ckan -c "ckan -c $CKAN_INI asset build"
+    ckan -c $CKAN_INI asset build
 
-    ## Create archive folder and set permissions
+    ## Create archive folder
     mkdir -p $CKAN_STORAGE_PATH/archiver
-    chown -R ckan:ckan $CKAN_STORAGE_PATH/archiver
+
+    ## Create resources folder
+    mkdir -p $CKAN_STORAGE_PATH/resources
 
     if [[ $CKAN__PLUGINS == *"xloader"* ]]; then
         CKAN_INI=$APP_DIR/ckan.ini
@@ -55,10 +56,6 @@ if [ ! -f /tmp/container_ready ]; then
         ckan -c $CKAN_INI db upgrade -p dbca
         ckan -c $CKAN_INI dbca load_spatial_data
     fi
-
-    # if [[ $CKAN__PLUGINS == *"harvest"* ]]; then
-    #     ckan -c $CKAN_INI db upgrade -p harvest
-    # fi
 
     # Set the container as ready so the startup scripts are not run again
     touch /tmp/container_ready
