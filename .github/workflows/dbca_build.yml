@@ -88,8 +88,9 @@ jobs:
          push: true
          tags: ${{ steps.meta_ckan_worker.outputs.tags }}
          build-args: CKAN_IMAGE=${{ steps.meta_ckan.outputs.tags }}
+
     - name: Run Trivy vuln scanner on CKAN image
-      uses: aquasecurity/trivy-action@0.24.0
+      uses: aquasecurity/trivy-action@0.26.0
       with:
         scan-type: 'image'
         image-ref: ${{ steps.meta_ckan.outputs.tags }}
@@ -97,6 +98,7 @@ jobs:
         severity: 'HIGH,CRITICAL'
         format: 'sarif'
         output: 'trivy-results.sarif'
+
     - name: Upload Trivy scan results to GitHub Security tab
       uses: github/codeql-action/upload-sarif@v3
       with:
