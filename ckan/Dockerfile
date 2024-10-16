@@ -4,8 +4,8 @@ FROM ckan/ckan-base:2.10.5
 # See Dockerfile.dev for more details and examples
 COPY setup/dbca_requirements.sh ${APP_DIR}
 RUN pip3 install pip --upgrade && \
-    chmod +x ${APP_DIR}/dbca_requirements.sh && \
-    ${APP_DIR}/dbca_requirements.sh
+  chmod +x ${APP_DIR}/dbca_requirements.sh && \
+  ${APP_DIR}/dbca_requirements.sh
 
 # Copy custom initialization scripts
 COPY docker-entrypoint.d/* /docker-entrypoint.d/
@@ -15,12 +15,12 @@ COPY docker-entrypoint.d/* /docker-entrypoint.d/
 COPY patches ${APP_DIR}/patches
 
 RUN for d in $APP_DIR/patches/*; do \
-        if [ -d $d ]; then \
-            for f in `ls $d/*.patch | sort -g`; do \
-                cd $SRC_DIR/`basename "$d"` && echo "$0: Applying patch $f to $SRC_DIR/`basename $d`"; patch -p1 < "$f" ; \
-            done ; \
-        fi ; \
-    done
+  if [ -d $d ]; then \
+  for f in `ls $d/*.patch | sort -g`; do \
+  cd $SRC_DIR/`basename "$d"` && echo "$0: Applying patch $f to $SRC_DIR/`basename $d`"; patch -p1 < "$f" ; \
+  done ; \
+  fi ; \
+  done
 
 ## DBCA specific configuration ##
 
@@ -40,8 +40,10 @@ ENV CKAN_INI=${APP_DIR}/config/dbca.ini
 
 # Set the permissions to the ckan user
 RUN chown -R ckan:ckan $APP_DIR && \
-    chown -R ckan:ckan /usr/lib/python3.10/site-packages/ && \
-    chown -R ckan:ckan /usr/bin/
+  chown -R ckan:ckan /usr/lib/python3.10/site-packages/ && \
+  chown -R ckan:ckan /usr/bin/
+
+RUN apk -U upgrade
 
 # Set the default user to ckan
 USER ckan
