@@ -24,10 +24,6 @@ pip3 install -e git+https://github.com/ckan/ckanext-pdfview.git@0.0.8#egg=ckanex
 pip3 install -e git+http://github.com/ckan/ckanext-report.git@master#egg=ckanext-report --exists-action i
 pip3 install -r ${SRC_DIR}/ckanext-report/requirements.txt
 
-# # Showcase
-pip3 install -e git+https://github.com/ckan/ckanext-showcase.git@v1.7.0#egg=ckanext-showcase
-pip3 install -r ${SRC_DIR}/ckanext-showcase/requirements.txt
-
 # Scheming
 pip3 install -e git+https://github.com/ckan/ckanext-scheming.git@release-3.0.0#egg=ckanext-scheming
 
@@ -78,3 +74,8 @@ rm /tmp/qsv.zip
 apk add file
 pip3 install -e git+https://github.com/dbca-wa/ckanext-qa.git@develop#egg=ckanext-qa
 pip3 install -r ${SRC_DIR}/ckanext-qa/requirements.txt
+
+# # Showcase
+# Temporary use of Salsa Digital's fork of ckanext-showcase
+pip3 install -e git+https://github.com/salsadigitalauorg/ckanext-showcase.git@master#egg=ckanext-showcase
+pip3 install -r ${SRC_DIR}/ckanext-showcase/requirements.txt
