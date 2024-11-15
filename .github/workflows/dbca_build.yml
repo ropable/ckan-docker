@@ -62,11 +62,18 @@ jobs:
           tags: ${{ steps.meta_ckan_worker.outputs.tags }}
           build-args: CKAN_IMAGE=${{ steps.meta_ckan.outputs.tags }}
 
+      - name: Extract first tag
+        id: extract_first_tag
+        run: echo "::set-output name=first_tag::$(echo ${{ steps.meta_ckan.outputs.tags }} | cut -d ',' -f 1)"
+
+      - name: Use first tag
+        run: echo "Using image ref ghcr.io/dbca-wa/ckan-docker-ckan:${{ steps.extract_first_tag.outputs.first_tag }}"
+
       - name: Run Trivy vuln scanner on CKAN image
         uses: aquasecurity/trivy-action@0.26.0
         with:
           scan-type: "image"
-          image-ref: ${{ steps.meta_ckan.outputs.tags }}
+          image-ref: ${{ steps.extract_first_tag.outputs.first_tag }}
           vuln-type: "os,library"
           severity: "HIGH,CRITICAL"
           format: "sarif"
