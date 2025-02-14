@@ -10,6 +10,9 @@ pip3 install -r ${SRC_DIR}/ckanext-archiver/requirements.txt
 pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@v1.5.1#egg=ckanext-dcat
 pip3 install -r ${SRC_DIR}/ckanext-dcat/requirements.txt
 
+# Geoview
+pip3 install -e git+https://github.com/ckan/ckanext-geoview.git@v0.1.0#egg=ckanext-geoview
+
 # Hierarchy
 pip3 install -e git+https://github.com/ckan/ckanext-hierarchy.git@v1.2.1#egg=ckanext-hierarchy
 pip3 install -r ${SRC_DIR}/ckanext-hierarchy/requirements.txt
@@ -21,11 +24,15 @@ pip3 install -e git+https://github.com/ckan/ckanext-pages.git@v0.5.2#egg=ckanext
 pip3 install -e git+https://github.com/ckan/ckanext-pdfview.git@0.0.8#egg=ckanext-pdfview
 
 # Report
-pip3 install -e git+http://github.com/ckan/ckanext-report.git@master#egg=ckanext-report --exists-action i
+pip3 install -e git+https://github.com/ckan/ckanext-report.git@master#egg=ckanext-report --exists-action i
 pip3 install -r ${SRC_DIR}/ckanext-report/requirements.txt
 
 # Scheming
 pip3 install -e git+https://github.com/ckan/ckanext-scheming.git@release-3.0.0#egg=ckanext-scheming
+
+# Showcase
+pip3 install -e git+https://github.com/ckan/ckanext-showcase.git@v1.8.3#egg=ckanext-showcase
+pip3 install -r ${SRC_DIR}/ckanext-showcase/requirements.txt
 
 # Spatial
 # dependencies
@@ -43,9 +50,6 @@ pip3 install -r ${SRC_DIR}/ckanext-spatial/requirements.txt
 # XLoader
 pip3 install -e git+https://github.com/ckan/ckanext-xloader.git@1.0.1#egg=ckanext-xloader
 pip3 install -r ${SRC_DIR}/ckanext-xloader/requirements.txt
-
-# Geoview
-pip3 install -e git+https://github.com/ckan/ckanext-geoview.git@v0.1.0#egg=ckanext-geoview
 
 
 ## 3rd Party ##
@@ -74,8 +78,3 @@ rm /tmp/qsv.zip
 apk add file
 pip3 install -e git+https://github.com/dbca-wa/ckanext-qa.git@master#egg=ckanext-qa
 pip3 install -r ${SRC_DIR}/ckanext-qa/requirements.txt
-
-# # Showcase
-# Temporary use of Salsa Digital's fork of ckanext-showcase
-pip3 install -e git+https://github.com/salsadigitalauorg/ckanext-showcase.git@master#egg=ckanext-showcase
-pip3 install -r ${SRC_DIR}/ckanext-showcase/requirements.txt
