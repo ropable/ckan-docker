@@ -43,8 +43,12 @@ apk add --no-cache \
     proj-util \
     proj-dev 
 pip3 install -e git+https://github.com/ckan/ckanext-spatial.git@master#egg=ckanext-spatial
-# Incompatibility with Shapely >2 Due to NumPy 2.0 Update https://github.com/ckan/ckanext-spatial/issues/330
-pip3 install "numpy>=1.26,<2"
+# pyproj 3.6.1 in ckanext-spatial requirements.txt is not working
+# Download the CKAN spatial extension requirements file and remove the line pyproj==3.6.1; python_version >= '3.9'
+curl -sSL https://raw.githubusercontent.com/ckan/ckanext-spatial/v2.3.0/requirements.txt \
+    | sed 's/pyproj==3.6.1; python_version >= '\''3.9'\''//g' > ${SRC_DIR}/ckanext-spatial/requirements.txt
+# manually install a later compatible version of pyproj
+pip3 install pyproj==3.7.*
 pip3 install -r ${SRC_DIR}/ckanext-spatial/requirements.txt
 
 # XLoader
